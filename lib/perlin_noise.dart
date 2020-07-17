@@ -17,7 +17,7 @@ makeCosLUT() {
 
 class PerlinNoise {
   factory PerlinNoise._() => null;
-  
+
   List<double> perlin;
   List<double> _perlinCosTable;
   int _perlinTWOPI, _perlinPI;
@@ -32,8 +32,9 @@ class PerlinNoise {
         (1.0 - _perlinCosTable[(i * _perlinPI).toInt() % _perlinTWOPI]);
   }
 
-  void noiseDetail(int lod) {
+  void noiseDetail(int lod, [double falloff]) {
     if (lod > 0) perlinOctaves = lod;
+    if (falloff != null && falloff > 0) perlinAmpFalloff = falloff;
   }
 
   void noiseSeed(int seed) {
