@@ -1,22 +1,37 @@
 import 'dart:ui';
+import 'dart:ui' as ui;
 
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' as material;
 import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:p5_flutter/perlin_noise.dart';
-import 'package:p5_flutter/text_output.dart';
+
+import 'color_mode.dart';
+import 'conversion.dart';
+import 'perlin_noise.dart';
+import 'text_output.dart';
+import 'array_functions.dart';
 import 'custom_canvas.dart';
 import 'internal_random.dart';
 import 'pconstants.dart';
 import 'paint_style.dart';
 import 'pmath.dart';
+import 'time_date.dart';
 
 // TODO parametrize these
 const batchesToKeep = 2;
 const drawCommandsPerBatch = 100;
 
 class PApplet extends CustomPainter
-    with ChangeNotifier, PMath, PerlinNoise, InternalRandom, TextOutput {
+    with
+        material.ChangeNotifier,
+        PMath,
+        PerlinNoise,
+        InternalRandom,
+        TextOutput,
+        ArrayFunctions,
+        TimeDate,
+        Conversion,
+        ColorFunctions {
   var elapsed = Duration();
   var deltaTime = Duration();
 
@@ -39,7 +54,53 @@ class PApplet extends CustomPainter
 
   var drawCalls = 0;
 
+  int _frameCount = 0;
+  double _frameRate = 0;
+  int frameCount() => _frameCount;
+  double frameRate() => _frameRate;
+
   bool clearOnBeginFrame() => true;
+
+  _getBlendMode(int mode) {
+    switch (mode) {
+      case DARKEST:
+        return material.BlendMode.darken;
+      case LIGHTEST:
+        return material.BlendMode.lighten;
+      case DIFFERENCE:
+        return material.BlendMode.difference;
+      case EXCLUSION:
+        return material.BlendMode.exclusion;
+      case MULTIPLY:
+        return material.BlendMode.multiply;
+      case SCREEN:
+        return material.BlendMode.screen;
+      case REPLACE:
+        return material.BlendMode.dst;
+      case HARD_LIGHT:
+        return material.BlendMode.hardLight;
+      case SOFT_LIGHT:
+        return material.BlendMode.softLight;
+      case OVERLAY:
+        return material.BlendMode.overlay;
+      case DODGE:
+        return material.BlendMode.colorDodge;
+      case BURN:
+        return material.BlendMode.colorBurn;
+      case SUBTRACT:
+        return material.BlendMode.dstOut; // ?
+      case ADD:
+        return BlendMode.plus;
+      case BLEND:
+      default:
+        return material.BlendMode.srcOver;
+    }
+  }
+
+  blendMode(int mode) {
+    paintStyle.fill.blendMode = _getBlendMode(mode);
+    paintStyle.stroke.blendMode = _getBlendMode(mode);
+  }
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -91,21 +152,59 @@ class PApplet extends CustomPainter
       }
     }
 
-    // _showDebugInfo();
-
     _canvas = null;
     _firstFrameDrawn = true;
+    _frameCount += 1;
+    _frameRate = 1 / (deltaTime.inMilliseconds * 0.001);
+
+    // _targetCanvas.restore();
+    _showDebugInfo();
+  }
+
+  imageMode(int mode) {
+    paintStyle.imageMode = mode;
+  }
+
+  clip(double a, double b, double c, double d) {
+    Rect rect;
+    final mode = paintStyle.imageMode;
+    if (mode == CENTER) {
+      rect = Rect.fromCenter(center: Offset(a, b), width: c, height: d);
+    } else if (mode == CORNERS) {
+      rect = Rect.fromLTRB(a, b, c, d);
+    } else {
+      rect = Rect.fromLTWH(a, b, c, d);
+    }
+    _canvas.clipRect(rect);
+  }
+
+  noClip() {
+    _canvas.clipRect(
+        Rect.fromCircle(center: Offset(0, 0), radius: double.infinity));
+  }
+
+  clear() {
+    _canvas.drawColor(Color(0), material.BlendMode.clear);
+  }
+
+  background(dynamic r, [int g, int b, int a]) {
+    if (r is Image) {
+      _canvas.drawImage(r, Offset(0, 0), Paint());
+    } else {
+      final c = color(r, g, b, a);
+      _canvas.drawColor(c, BlendMode.src);
+    }
   }
 
   _showDebugInfo() {
     // fps
-    final fps = 1 / (deltaTime.inMilliseconds * 0.001);
+    final fps = _frameRate;
     var drawCalls = 0;
     if (_canvas is CustomCanvas) {
       drawCalls = (_canvas as CustomCanvas).drawCalls;
     }
     TextSpan span = new TextSpan(
-        style: new TextStyle(color: Colors.blue[800]), text: '''       
+        style: new TextStyle(color: material.Colors.blue[800]), text: '''       
         elapsed: ${elapsed.toString()}
         fps: $fps
         mouseX: $mouseX
@@ -151,12 +250,45 @@ class PApplet extends CustomPainter
   mouseDragged() {}
   mouseClicked() {}
 
+  translate(double x, double y) {
+    _canvas.translate(x, y);
+  }
+
+  applyMatrix(dynamic n00,
+      [double n01,
+      double n02,
+      double n03,
+      double n10,
+      double n11,
+      double n12,
+      double n13,
+      double n20,
+      double n21,
+      double n22,
+      double n23,
+      double n30,
+      double n31,
+      double n32,
+      double n33]) {
+    throw UnimplementedError();
+  }
+
   popMatrix() {
     _canvas?.restore();
   }
 
   pushMatrix() {
     _canvas?.save();
+  }
+
+  push() {
+    pushMatrix();
+    pushStyle();
+  }
+
+  pop() {
+    popMatrix();
+    popStyle();
   }
 
   pushStyle() {
@@ -173,21 +305,13 @@ class PApplet extends CustomPainter
     notifyListeners();
   }
 
-  setLocation(int x, int y) {
-    throw UnimplementedError();
-  }
+  setLocation(int x, int y) {}
 
-  setResizable(bool resizable) {
-    throw UnimplementedError();
-  }
+  setResizable(bool resizable) {}
 
-  setTitle(String title) {
-    throw UnimplementedError();
-  }
+  setTitle(String title) {}
 
-  thread() {
-    throw UnimplementedError();
-  }
+  thread() {}
 
   noLoop() {
     _isTicking = false;
@@ -217,25 +341,11 @@ class PApplet extends CustomPainter
     paintStyle.fill?.color = color;
   }
 
-  noSmooth() {
-    print('noSmooth unimplemented');
-  }
+  smooth() {}
+  noSmooth() {}
 
   noStroke() {
     paintStyle.useStroke = false;
-  }
-
-  Color color(int r, [int g, int b, int a]) {
-    if (g != null && b == null) {
-      return Color.fromARGB(g, r, r, r);
-    }
-    if (g == null) {
-      return Color.fromARGB(255, r, r, r);
-    }
-    if (a == null && b != null) {
-      return Color.fromARGB(255, r, g, b);
-    }
-    return Color.fromARGB(a, r, g, b);
   }
 
   stroke(dynamic r, [int g, int b, int a]) {
@@ -336,10 +446,11 @@ class PApplet extends CustomPainter
     }
   }
 
-  point(double x, double y, [double z]) {
+  point(num x, num y, [num z]) {
     final ps = paintStyle;
     if (ps.useStroke)
-      _canvas.drawPoints(PointMode.points, [Offset(x, y)], ps.stroke);
+      _canvas.drawPoints(
+          PointMode.points, [Offset(x.toDouble(), y.toDouble())], ps.stroke);
   }
 
   quad(double x1, double y1, double x2, double y2, double x3, double y3,
@@ -528,6 +639,240 @@ class PApplet extends CustomPainter
     if (ps.useStroke) _canvas.drawPath(p, ps.stroke);
   }
 
+  Path _currentShape;
+  Path _currentContour;
+  bool _isCatmullRomShape = false;
+  bool _isCatmullRomContour = false;
+  var _shapeVertices = <Offset>[];
+  var _contourVertices = <Offset>[];
+
+  bool _isContourActive = false;
+
+  List<Offset> get _pathVertices =>
+      _isContourActive ? _contourVertices : _shapeVertices;
+
+  int _shapeKind;
+
+  var _cutters = <Path>[];
+
+  beginContour() {
+    _isCatmullRomContour = false;
+    _currentContour = Path();
+    _contourVertices = [];
+    _isContourActive = true;
+  }
+
+  Path resolveCurvePath(List<Offset> vertices) {
+    if (vertices.length < 3) {
+      return null;
+    }
+
+    var b = List<Offset>(4), s = 1 - _curveTightness;
+    var newPath = Path();
+
+    newPath.moveTo(vertices[1].dx, vertices[1].dy);
+    for (var i = 1; i + 2 < vertices.length; i++) {
+      var v = vertices[i];
+
+      b[0] = Offset(v.dx, v.dy);
+      b[1] = Offset(
+          v.dx + (s * vertices[i + 1].dx - s * vertices[i - 1].dx) / 6,
+          v.dy + (s * vertices[i + 1].dy - s * vertices[i - 1].dy) / 6);
+      b[2] = Offset(
+          vertices[i + 1].dx +
+              (s * vertices[i].dx - s * vertices[i + 2].dx) / 6,
+          vertices[i + 1].dy +
+              (s * vertices[i].dy - s * vertices[i + 2].dy) / 6);
+      b[3] = Offset(vertices[i + 1].dx, vertices[i + 1].dy);
+
+      newPath.cubicTo(b[1].dx, b[1].dy, b[2].dx, b[2].dy, b[3].dx, b[3].dy);
+    }
+    return newPath;
+  }
+
+  endContour() {
+    if (_currentContour == null) {
+      return;
+    }
+
+    if (_isCatmullRomContour) {
+      _currentContour = resolveCurvePath(_contourVertices);
+    }
+
+    _currentContour?.close();
+    if (_currentContour != null) {
+      _cutters.add(_currentContour);
+    }
+    _isContourActive = false;
+    _currentContour = null;
+  }
+
+  beginShape([int kind]) {
+    _isCatmullRomShape = false;
+    _shapeVertices = [];
+    _shapeKind = kind;
+    _currentShape = Path();
+  }
+
+  endShape([int mode]) {
+    if (_shapeKind == LINES) {
+      for (int x = 0; x < _shapeVertices.length; x += 2) {
+        line(
+          _shapeVertices[x].dx,
+          _shapeVertices[x].dy,
+          _shapeVertices[x + 1].dx,
+          _shapeVertices[x + 1].dy,
+        );
+      }
+    } else if (_shapeKind == POINTS && paintStyle.useStroke) {
+      _canvas.drawPoints(PointMode.points, _shapeVertices, paintStyle.stroke);
+    } else if (_shapeKind == TRIANGLES) {
+      for (int x = 0; x < _shapeVertices.length; x += 3) {
+        triangle(
+            _shapeVertices[x + 0].dx,
+            _shapeVertices[x + 0].dy,
+            _shapeVertices[x + 1].dx,
+            _shapeVertices[x + 1].dy,
+            _shapeVertices[x + 2].dx,
+            _shapeVertices[x + 2].dy);
+      }
+    } else if (_shapeKind == TRIANGLE_STRIP) {
+      for (int x = 0; x < _shapeVertices.length - 2; x += 1) {
+        triangle(
+            _shapeVertices[x + 0].dx,
+            _shapeVertices[x + 0].dy,
+            _shapeVertices[x + 1].dx,
+            _shapeVertices[x + 1].dy,
+            _shapeVertices[x + 2].dx,
+            _shapeVertices[x + 2].dy);
+      }
+    } else {
+      if (_isCatmullRomShape) {
+        _currentShape = resolveCurvePath(_shapeVertices);
+      }
+
+      if (_currentShape != null) {
+        if (mode == CLOSE) {
+          _currentShape.close();
+        }
+        _cutters.forEach((element) {
+          _currentShape =
+              Path.combine(PathOperation.difference, _currentShape, element);
+        });
+
+        var ps = paintStyle;
+
+        if (ps.useFill) {
+          _canvas.drawPath(_currentShape, ps.fill);
+        }
+        if (ps.useStroke) {
+          _canvas.drawPath(_currentShape, ps.stroke);
+        }
+      }
+    }
+
+    _cutters = [];
+    _currentShape = null;
+  }
+
+  vertex(double x, double y) {
+    var path = _currentShape;
+    if (_isContourActive) {
+      path = _currentContour;
+    }
+
+    if (_pathVertices.length == 0) {
+      path.moveTo(x, y);
+    } else {
+      path.lineTo(x, y);
+    }
+    _pathVertices.add(Offset(x, y));
+  }
+
+  curveVertex(double x, double y) {
+    if (_shapeKind != null) {
+      return;
+    }
+    if (_isContourActive) {
+      _isCatmullRomContour = true;
+    } else {
+      _isCatmullRomShape = true;
+    }
+    vertex(x, y);
+  }
+
+  bezierVertex(x2, y2, x3, y3, x4, y4) {
+    var path = _currentShape;
+    if (_isContourActive) {
+      path = _currentContour;
+    }
+    path.cubicTo(x2, y2, x3, y3, x4, y4);
+  }
+
+  textSize(int size) {
+    paintStyle.textSize = size;
+    paintStyle.textLeading = size;
+  }
+
+  textLeading(int leading) {
+    paintStyle.textLeading = leading;
+  }
+
+  textAlign(int align) {
+    if (align == CENTER) {
+      paintStyle.textAlign = material.TextAlign.center;
+    } else if (align == LEFT) {
+      paintStyle.textAlign = material.TextAlign.left;
+    } else {
+      // RIGHT
+      paintStyle.textAlign = material.TextAlign.right;
+    }
+  }
+
+  textMode(int mode) {
+    paintStyle.textMode = mode;
+  }
+
+  text(String str, double x1, double y1, [double x2, double y2]) {
+    var style = ui.TextStyle(
+      color: paintStyle.fill.color,
+      height: paintStyle.textLeading.toDouble(),
+      fontSize: paintStyle.textSize.toDouble(),
+    );
+    if (false) {
+      _canvas.drawParagraph(
+          (ParagraphBuilder(
+            ParagraphStyle(
+              fontSize: paintStyle.textSize.toDouble(),
+              textAlign: paintStyle.textAlign,
+              height: paintStyle.textLeading.toDouble(),
+              fontStyle: material.FontStyle.normal,
+            ),
+          )..pushStyle(style))
+              .build()
+                ..layout(ui.ParagraphConstraints(width: x2)),
+          Offset(x1, y1));
+    } else {
+      material.TextPainter(
+        text: TextSpan(
+          text: str,
+          style: TextStyle(
+            color: paintStyle.fill.color,
+            height: paintStyle.textLeading.toDouble() /
+                paintStyle.textSize.toDouble(),
+            fontSize: paintStyle.textSize.toDouble(),
+          ),
+        ),
+        textAlign: paintStyle.textAlign,
+        textDirection: material.TextDirection.ltr,
+      )
+        ..layout(
+            maxWidth:
+                x2 != null ? x2 > 0 ? x2 : double.infinity : double.infinity)
+        ..paint(_canvas, Offset(x1, y1));
+    }
+  }
+
   updateTime(Duration newElapsed) {
     deltaTime = newElapsed - elapsed;
     elapsed = newElapsed;
@@ -550,17 +895,17 @@ enum _EventType {
 
 // make a generic class which adds a subcass of the custom painter
 
-class P5Widget<T extends PApplet> extends StatefulWidget {
+class P5Widget<T extends PApplet> extends material.StatefulWidget {
   final T Function() create;
-  P5Widget({@required this.create});
+  P5Widget({@material.required this.create});
 
   @override
   _P5WidgetState createState() => _P5WidgetState(create: create);
 }
 
 // TODO wrap into mouse region
-class _P5WidgetState<T extends PApplet> extends State<P5Widget>
-    with SingleTickerProviderStateMixin {
+class _P5WidgetState<T extends PApplet> extends material.State<P5Widget>
+    with material.SingleTickerProviderStateMixin {
   T Function() create;
   T sketch;
 
@@ -583,10 +928,10 @@ class _P5WidgetState<T extends PApplet> extends State<P5Widget>
   }
 
   @override
-  Widget build(BuildContext context) {
-    return MouseRegion(
-      child: GestureDetector(
-        child: CustomPaint(
+  material.Widget build(material.BuildContext context) {
+    return material.MouseRegion(
+      child: material.GestureDetector(
+        child: material.CustomPaint(
           size: Size.infinite,
           painter: sketch,
         ),
