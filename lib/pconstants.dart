@@ -377,7 +377,7 @@ const CODED = 0xffff;
 // key will be CODED and keyCode will be this value
 //  const UP = KeyEvent.VK_UP;
 //  const DOWN = KeyEvent.VK_DOWN;
-//  const LEFT = KeyEvent.VK_LEFT;
+const LEFT = 37; //KeyEvent.VK_LEFT;
 //  const RIGHT = KeyEvent.VK_RIGHT;
 
 // // key will be CODED and keyCode will be this value
