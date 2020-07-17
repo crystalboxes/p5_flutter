@@ -33,9 +33,15 @@ class PaintStyle {
 
   var ellipseMode = CENTER;
   var rectMode = CORNER;
+  var imageMode = CORNER;
 
-  Paint get fill => useFill ? _fillPaint : null;
-  Paint get stroke => useStroke ? _strokePaint : null;
+  var textSize = 12;
+  var textLeading = 14;
+  var textAlign = TextAlign.left;
+  var textMode = MODEL;
+
+  Paint get fill => _fillPaint;
+  Paint get stroke => _strokePaint;
 
   clone() {
     var cloned = PaintStyle();
@@ -45,6 +51,13 @@ class PaintStyle {
     cloned._strokePaint = _strokePaint.clone();
     cloned.ellipseMode = ellipseMode;
     cloned.rectMode = rectMode;
+    cloned.imageMode = imageMode;
+
+    cloned.textSize = textSize;
+    cloned.textLeading = textLeading;
+    cloned.textAlign = textAlign;
+    cloned.textMode = textMode;
+
     return cloned;
   }
 
