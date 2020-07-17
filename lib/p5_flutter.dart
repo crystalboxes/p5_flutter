@@ -38,6 +38,11 @@ class PApplet extends CustomPainter
   var mouseX = 0.0;
   var mouseY = 0.0;
 
+  Size _size;
+
+  double get width => _size.width;
+  double get height => _size.height;
+
   var _styleStack = <PaintStyle>[
     PaintStyle.makeDefault(),
   ];
@@ -104,6 +109,7 @@ class PApplet extends CustomPainter
 
   @override
   void paint(Canvas canvas, Size size) {
+    _size = size;
     _targetCanvas = canvas;
     _targetCanvas.drawColor(color(200), BlendMode.color);
 
@@ -353,7 +359,7 @@ class PApplet extends CustomPainter
     if (r is Color && !(r is num)) {
       color = r;
     } else {
-      color = this.color(r, g, b, a);
+      color = this.color(r.toInt(), g, b, a);
     }
     paintStyle.useStroke = true;
     paintStyle.stroke?.color = color;
@@ -439,10 +445,11 @@ class PApplet extends CustomPainter
     if (ps.useStroke) _canvas.drawArc(rect, 0, TWO_PI, false, ps.stroke);
   }
 
-  line(double x1, double y1, double x2, double y2) {
+  line(num x1, num y1, num x2, num y2) {
     final ps = paintStyle;
     if (ps.useStroke) {
-      _canvas.drawLine(Offset(x1, y1), Offset(x2, y2), ps.stroke);
+      _canvas.drawLine(Offset(x1.toDouble(), y1.toDouble()),
+          Offset(x2.toDouble(), y2.toDouble()), ps.stroke);
     }
   }
 
