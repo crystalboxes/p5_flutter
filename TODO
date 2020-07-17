@@ -1,0 +1,360 @@
+- [ ] Shape
+  - [ ] createShape()
+  - [ ] loadShape()
+  - [ ] PShape
+
+- [x] 2D Primitives
+  - [x] arc()
+  - [x] circle()
+  - [x] ellipse()
+  - [x] line()
+  - [x] point()
+  - [x] quad()
+  - [x] rect()
+  - [x] square()
+  - [x] triangle()
+
+- [x] Curves
+  - [x] bezier()
+  - [x] bezierDetail()
+  - [x] bezierPoint()
+  - [x] bezierTangent()
+  - [x] curve()
+  - [x] curveDetail()
+  - [x] curvePoint()
+  - [x] curveTangent()
+  - [x] curveTightness()
+
+- [ ] 3D Primitives
+  - [ ] box()
+  - [ ] sphere()
+  - [ ] sphereDetail()
+
+- [x] Attributes
+  - [x] ellipseMode()
+  - [x] rectMode()
+  - [x] strokeCap()
+  - [x] strokeJoin()
+  - [x] strokeWeight()
+
+- [ ] Vertex
+  - [ ] beginContour()
+  - [ ] beginShape()
+  - [ ] bezierVertex()
+  - [ ] curveVertex()
+  - [ ] endContour()
+  - [ ] endShape()
+  - [ ] quadraticVertex()
+  - [ ] vertex()
+
+- [ ] Loading & Displaying
+  - [ ] shape()
+  - [ ] shapeMode()
+
+- [ ] Transform
+  - [ ] applyMatrix()
+  - [ ] popMatrix()
+  - [ ] printMatrix()
+  - [ ] pushMatrix()
+  - [ ] resetMatrix()
+  - [ ] rotate()
+  - [ ] rotateX()
+  - [ ] rotateY()
+  - [ ] rotateZ()
+  - [ ] scale()
+  - [ ] shearX()
+  - [ ] shearY()
+  - [ ] translate()
+ 
+- [ ] Lights, Camera
+  - [ ] Lights
+    - [ ] ambientLight()
+    - [ ] directionalLight()
+    - [ ] lightFalloff()
+    - [ ] lights()
+    - [ ] lightSpecular()
+    - [ ] noLights()
+    - [ ] normal()
+    - [ ] pointLight()
+    - [ ] spotLight()
+
+- [ ] Camera
+  - [ ] beginCamera()
+  - [ ] camera()
+  - [ ] endCamera()
+  - [ ] frustum()
+  - [ ] ortho()
+  - [ ] perspective()
+  - [ ] printCamera()
+  - [ ] printProjection()
+ 
+- [ ] Coordinates
+  - [ ] modelX()
+  - [ ] modelY()
+  - [ ] modelZ()
+  - [ ] screenX()
+  - [ ] screenY()
+  - [ ] screenZ()
+ 
+- [ ] Material Properties
+  - [ ] ambient()
+  - [ ] emissive()
+  - [ ] shininess()
+  - [ ] specular()
+ 
+- [ ] Color
+  - [ ] Setting
+    - [ ] background()
+    - [ ] clear()
+    - [ ] colorMode()
+    - [ ] fill()
+    - [ ] noFill()
+    - [ ] noStroke()
+    - [ ] stroke()
+ 
+- [ ] Creating & Reading
+  - [ ] alpha()
+  - [ ] blue()
+  - [ ] brightness()
+  - [x] color()
+  - [ ] green()
+  - [ ] hue()
+  - [ ] lerpColor()
+  - [ ] red()
+  - [ ] saturation()
+ 
+- [ ] Image
+  - [ ] createImage()
+  - [ ] PImage
+ 
+- [ ] Loading & Displaying
+  - [ ] image()
+  - [ ] imageMode()
+  - [ ] loadImage()
+  - [ ] noTint()
+  - [ ] requestImage()
+  - [ ] tint()
+ 
+- [ ] Textures
+  - [ ] texture()
+  - [ ] textureMode()
+  - [ ] textureWrap()
+  - [ ] Pixels
+  - [ ] blend()
+  - [ ] copy()
+  - [ ] filter()
+  - [ ] get()
+  - [ ] loadPixels()
+  - [ ] pixels[]
+  - [ ] set()
+  - [ ] updatePixels()
+ 
+- [ ] Rendering
+  - [ ] blendMode()
+  - [ ] clip()
+  - [ ] createGraphics()
+  - [ ] hint()
+  - [ ] noClip()
+ 
+- [ ] PGraphics
+  - [ ] Shaders
+    - [ ] loadShader()
+    - [ ] PShader
+    - [ ] resetShader()
+    - [ ] shader()
+ 
+- [ ] Typography
+  - [ ] PFont
+  - [ ] Loading & Displaying
+    - [ ] createFont()
+    - [ ] loadFont()
+    - [ ] text()
+    - [ ] textFont()
+  - [ ] Attributes
+    - [ ] textAlign()
+    - [ ] textLeading()
+    - [ ] textMode()
+    - [ ] textSize()
+    - [ ] textWidth()
+ 
+- [ ] Metrics
+  - [ ] textAscent()
+  - [ ] textDescent()
+ 
+- [ ] PVector
+ 
+- [ ] Calculation
+  - [x] abs()
+  - [x] ceil()
+  - [x] constrain()
+  - [x] dist()
+  - [x] exp()
+  - [x] floor()
+  - [x] lerp()
+  - [x] log()
+  - [x] mag()
+  - [x] map()
+  - [x] max()
+  - [x] min()
+  - [x] norm()
+  - [x] pow()
+  - [x] round()
+  - [x] sq()
+  - [x] sqrt()
+ 
+- [x] Trigonometry
+  - [x] acos()
+  - [x] asin()
+  - [x] atan()
+  - [x] atan2()
+  - [x] cos()
+  - [x] degrees()
+  - [x] radians()
+  - [x] sin()
+  - [x] tan()
+ 
+- [ ] Random
+  - [ ] noise()
+  - [ ] noiseDetail()
+  - [ ] noiseSeed()
+  - [ ] random()
+  - [ ] randomGaussian()
+  - [ ] randomSeed()
+
+- [x] Constants
+  - [x] HALF_PI
+  - [x] PI
+  - [x] QUARTER_PI
+  - [x] TAU
+  - [x] TWO_PI
+
+- [ ] Input
+  - [ ] Mouse
+    - [ ] mouseButton
+    - [x] mouseClicked()
+    - [x] mouseDragged()
+    - [ ] mouseMoved()
+    - [x] mousePressed()
+    - [x] mousePressed
+    - [x] mouseReleased()
+    - [ ] mouseWheel()
+    - [x] mouseX
+    - [x] mouseY
+    - [ ] pmouseX
+    - [ ] pmouseY
+
+  - [ ] Keyboard
+    - [ ] key
+    - [ ] keyCode
+    - [ ] keyPressed()
+    - [ ] keyPressed
+    - [ ] keyReleased()
+    - [ ] keyTyped()
+
+- [ ] Files
+  - [ ] BufferedReader
+  - [ ] createInput()
+  - [ ] createReader()
+  - [ ] launch()
+  - [ ] loadBytes()
+  - [ ] loadJSONArray()
+  - [ ] loadJSONObject()
+  - [ ] loadStrings()
+  - [ ] loadTable()
+  - [ ] loadXML()
+  - [ ] parseJSONArray()
+  - [ ] parseJSONObject()
+  - [ ] parseXML()
+  - [ ] selectFolder()
+  - [ ] selectInput()
+
+- [ ] Time & Date
+  - [ ] day()
+  - [ ] hour()
+  - [ ] millis()
+  - [ ] minute()
+  - [ ] month()
+  - [ ] second()
+  - [ ] year()
+
+- [ ] Output
+  - [ ] Text Area
+  - [ ] print()
+  - [ ] printArray()
+  - [ ] println()
+
+- [ ] Image
+  - [ ] save()
+  - [ ] saveFrame()
+
+- [ ] Structure
+  - [ ] draw()
+  - [ ] exit()
+  - [ ] loop()
+  - [ ] noLoop()
+  - [ ] pop()
+  - [ ] popStyle()
+  - [ ] push()
+  - [ ] pushStyle()
+  - [ ] redraw()
+  - [ ] setLocation()
+  - [ ] setResizable()
+  - [ ] setTitle()
+  - [ ] setup()
+  - [ ] thread()
+
+- [ ] Environment
+  - [ ] cursor()
+  - [ ] delay()
+  - [ ] displayDensity()
+  - [ ] focused
+  - [ ] frameCount
+  - [ ] frameRate()
+  - [ ] frameRate
+  - [ ] fullScreen()
+  - [ ] height
+  - [ ] noCursor()
+  - [x] noSmooth() // didn't find an equivalent
+  - [ ] pixelDensity()
+  - [ ] pixelHeight
+  - [ ] pixelWidth
+  - [ ] settings()
+  - [ ] size()
+  - [ ] smooth()
+  - [ ] width
+
+- [ ] Conversion
+  - [ ] binary()
+  - [ ] boolean()
+  - [ ] byte()
+  - [ ] char()
+  - [ ] float()
+  - [ ] hex()
+  - [ ] int()
+  - [ ] str()
+  - [ ] unbinary()
+  - [ ] unhex()
+  - [ ] String
+
+- [ ] String Functions
+  - [ ] join()
+  - [ ] match()
+  - [ ] matchAll()
+  - [ ] nf()
+  - [ ] nfc()
+  - [ ] nfp()
+  - [ ] nfs()
+  - [ ] split()
+  - [ ] splitTokens()
+  - [ ] trim()
+
+- [ ] Array Functions
+  - [ ] append()
+  - [ ] arrayCopy()
+  - [ ] concat()
+  - [ ] expand()
+  - [ ] reverse()
+  - [ ] shorten()
+  - [ ] sort()
+  - [ ] splice()
+  - [ ] subset()
