@@ -3,7 +3,10 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:p5_flutter/perlin_noise.dart';
+import 'package:p5_flutter/text_output.dart';
 import 'custom_canvas.dart';
+import 'internal_random.dart';
 import 'pconstants.dart';
 import 'paint_style.dart';
 import 'pmath.dart';
@@ -12,7 +15,8 @@ import 'pmath.dart';
 const batchesToKeep = 2;
 const drawCommandsPerBatch = 100;
 
-class PApplet extends CustomPainter with ChangeNotifier, PMath {
+class PApplet extends CustomPainter
+    with ChangeNotifier, PMath, PerlinNoise, InternalRandom, TextOutput {
   var elapsed = Duration();
   var deltaTime = Duration();
 
@@ -90,6 +94,7 @@ class PApplet extends CustomPainter with ChangeNotifier, PMath {
     // _showDebugInfo();
 
     _canvas = null;
+    _firstFrameDrawn = true;
   }
 
   _showDebugInfo() {
@@ -129,6 +134,10 @@ class PApplet extends CustomPainter with ChangeNotifier, PMath {
   }
 
   var _isTicking = true;
+  var _firstFrameDrawn = false;
+
+  bool get isTicking => _isTicking;
+  bool get firstFrameDrawn => _firstFrameDrawn;
 
   PaintStyle get paintStyle => _styleStack.last;
 
@@ -565,7 +574,10 @@ class _P5WidgetState<T extends PApplet> extends State<P5Widget>
 
     ticker = createTicker((elapsed) {
       sketch.updateTime(elapsed);
-      sketch.redraw();
+      if (sketch.firstFrameDrawn && !sketch.isTicking) {
+      } else {
+        sketch.redraw();
+      }
     })
       ..start();
   }

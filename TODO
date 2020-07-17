@@ -53,18 +53,18 @@
 
 - [ ] Transform
   - [ ] applyMatrix()
-  - [ ] popMatrix()
+  - [x] popMatrix()
   - [ ] printMatrix()
-  - [ ] pushMatrix()
+  - [x] pushMatrix()
   - [ ] resetMatrix()
-  - [ ] rotate()
+  - [x] rotate()
   - [ ] rotateX()
   - [ ] rotateY()
   - [ ] rotateZ()
-  - [ ] scale()
+  - [x] scale()
   - [ ] shearX()
   - [ ] shearY()
-  - [ ] translate()
+  - [x] translate()
  
 - [ ] Lights, Camera
   - [ ] Lights
@@ -155,14 +155,7 @@
   - [ ] createGraphics()
   - [ ] hint()
   - [ ] noClip()
- 
-- [ ] PGraphics
-  - [ ] Shaders
-    - [ ] loadShader()
-    - [ ] PShader
-    - [ ] resetShader()
-    - [ ] shader()
- 
+
 - [ ] Typography
   - [ ] PFont
   - [ ] Loading & Displaying
@@ -183,7 +176,7 @@
  
 - [ ] PVector
  
-- [ ] Calculation
+- [x] Calculation
   - [x] abs()
   - [x] ceil()
   - [x] constrain()
@@ -213,13 +206,13 @@
   - [x] sin()
   - [x] tan()
  
-- [ ] Random
-  - [ ] noise()
-  - [ ] noiseDetail()
-  - [ ] noiseSeed()
-  - [ ] random()
-  - [ ] randomGaussian()
-  - [ ] randomSeed()
+- [x] Random
+  - [x] noise()
+  - [x] noiseDetail()
+  - [x] noiseSeed()
+  - [x] random()
+  - [x] randomGaussian()
+  - [x] randomSeed()
 
 - [x] Constants
   - [x] HALF_PI
@@ -279,13 +272,13 @@
 
 - [ ] Output
   - [ ] Text Area
-  - [ ] print()
-  - [ ] printArray()
-  - [ ] println()
+    - [x] print()
+    - [x] printArray()
+    - [x] println()
 
-- [ ] Image
-  - [ ] save()
-  - [ ] saveFrame()
+  - [ ] Image
+    - [ ] save()
+    - [ ] saveFrame()
 
 - [ ] Structure
   - [ ] draw()
