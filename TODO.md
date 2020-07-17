@@ -37,15 +37,15 @@
   - [x] strokeJoin()
   - [x] strokeWeight()
 
-- [ ] Vertex
-  - [ ] beginContour()
-  - [ ] beginShape()
-  - [ ] bezierVertex()
-  - [ ] curveVertex()
-  - [ ] endContour()
-  - [ ] endShape()
-  - [ ] quadraticVertex()
-  - [ ] vertex()
+- [x] Vertex
+  - [x] beginContour()
+  - [x] beginShape()
+  - [x] bezierVertex()
+  - [x] curveVertex()
+  - [x] endContour()
+  - [x] endShape()
+  - [x] quadraticVertex()
+  - [x] vertex()
 
 - [ ] Loading & Displaying
   - [ ] shape()
@@ -102,26 +102,24 @@
   - [ ] shininess()
   - [ ] specular()
  
-- [ ] Color
-  - [ ] Setting
-    - [ ] background()
-    - [ ] clear()
-    - [ ] colorMode()
-    - [ ] fill()
-    - [ ] noFill()
-    - [ ] noStroke()
-    - [ ] stroke()
- 
-- [ ] Creating & Reading
-  - [ ] alpha()
-  - [ ] blue()
-  - [ ] brightness()
-  - [x] color()
-  - [ ] green()
-  - [ ] hue()
-  - [ ] lerpColor()
-  - [ ] red()
-  - [ ] saturation()
+- [x] Color
+  - [x] Setting
+    - [x] background()
+    - [x] clear()
+    - [x] colorMode()
+    - [x] fill()
+    - [x] noFill()
+    - [x] noStroke()
+    - [x] stroke()
+  - [x] Creating & Reading
+    - [x] blue()
+    - [x] brightness()
+    - [x] color()
+    - [x] green()
+    - [x] hue()
+    - [x] lerpColor()
+    - [x] red()
+    - [x] saturation()
  
 - [ ] Image
   - [ ] createImage()
@@ -139,7 +137,8 @@
   - [ ] texture()
   - [ ] textureMode()
   - [ ] textureWrap()
-  - [ ] Pixels
+  
+- [ ] Pixels
   - [ ] blend()
   - [ ] copy()
   - [ ] filter()
@@ -150,25 +149,25 @@
   - [ ] updatePixels()
  
 - [ ] Rendering
-  - [ ] blendMode()
-  - [ ] clip()
+  - [x] blendMode()
+  - [x] clip()
   - [ ] createGraphics()
   - [ ] hint()
-  - [ ] noClip()
+  - [x] noClip()
 
 - [ ] Typography
   - [ ] PFont
   - [ ] Loading & Displaying
     - [ ] createFont()
     - [ ] loadFont()
-    - [ ] text()
+    - [x] text()
     - [ ] textFont()
-  - [ ] Attributes
-    - [ ] textAlign()
-    - [ ] textLeading()
-    - [ ] textMode()
-    - [ ] textSize()
-    - [ ] textWidth()
+  - [x] Attributes
+    - [x] textAlign()
+    - [x] textLeading()
+    - [x] textMode()
+    - [x] textSize()
+    - [x] textWidth()
  
 - [ ] Metrics
   - [ ] textAscent()
@@ -261,17 +260,17 @@
   - [ ] selectFolder()
   - [ ] selectInput()
 
-- [ ] Time & Date
-  - [ ] day()
-  - [ ] hour()
-  - [ ] millis()
-  - [ ] minute()
-  - [ ] month()
-  - [ ] second()
-  - [ ] year()
+- [x] Time & Date
+  - [x] day()
+  - [x] hour()
+  - [x] millis()
+  - [x] minute()
+  - [x] month()
+  - [x] second()
+  - [x] year()
 
 - [ ] Output
-  - [ ] Text Area
+  - [x] Text Area
     - [x] print()
     - [x] printArray()
     - [x] println()
@@ -281,53 +280,45 @@
     - [ ] saveFrame()
 
 - [ ] Structure
-  - [ ] draw()
-  - [ ] exit()
-  - [ ] loop()
-  - [ ] noLoop()
-  - [ ] pop()
-  - [ ] popStyle()
-  - [ ] push()
-  - [ ] pushStyle()
-  - [ ] redraw()
+  - [x] draw()
+  - [x] exit()
+  - [x] loop()
+  - [x] noLoop()
+  - [x] pop()
+  - [x] popStyle()
+  - [x] push()
+  - [x] pushStyle()
+  - [x] redraw()
   - [ ] setLocation()
   - [ ] setResizable()
   - [ ] setTitle()
-  - [ ] setup()
+  - [x] setup()
   - [ ] thread()
 
 - [ ] Environment
   - [ ] cursor()
   - [ ] delay()
   - [ ] displayDensity()
-  - [ ] focused
-  - [ ] frameCount
-  - [ ] frameRate()
-  - [ ] frameRate
+  - [x] frameCount
+  - [x] frameRate()
   - [ ] fullScreen()
-  - [ ] height
   - [ ] noCursor()
   - [x] noSmooth() // didn't find an equivalent
   - [ ] pixelDensity()
-  - [ ] pixelHeight
-  - [ ] pixelWidth
   - [ ] settings()
   - [ ] size()
-  - [ ] smooth()
-  - [ ] width
+  - [x] smooth()
 
-- [ ] Conversion
-  - [ ] binary()
-  - [ ] boolean()
-  - [ ] byte()
-  - [ ] char()
-  - [ ] float()
-  - [ ] hex()
-  - [ ] int()
-  - [ ] str()
-  - [ ] unbinary()
-  - [ ] unhex()
-  - [ ] String
+- [x] Conversion
+  - [x] binary()
+  - [x] boolean()
+  - [x] byte()
+  - [x] char()
+  - [x] float()
+  - [x] hex()
+  - [x] str()
+  - [x] unbinary()
+  - [x] unhex()
 
 - [ ] String Functions
   - [ ] join()
@@ -341,13 +332,13 @@
   - [ ] splitTokens()
   - [ ] trim()
 
-- [ ] Array Functions
-  - [ ] append()
-  - [ ] arrayCopy()
-  - [ ] concat()
-  - [ ] expand()
-  - [ ] reverse()
-  - [ ] shorten()
-  - [ ] sort()
-  - [ ] splice()
-  - [ ] subset()
+- [x] Array Functions
+  - [x] append()
+  - [x] arrayCopy()
+  - [x] concat()
+  - [x] expand()
+  - [x] reverse()
+  - [x] shorten()
+  - [x] sort()
+  - [x] splice()
+  - [x] subset()

@@ -15,12 +15,12 @@ class MySketch extends PApplet {
 
   @override
   void draw() {
-    strokeWeight(1); // Default
-    line(20, 20, 80, 20);
-    strokeWeight(4); // Thicker
-    line(20, 40, 80, 40);
-    strokeWeight(10); // Beastly
-    line(20, 70, 80, 70);
+    textSize(32);
+    text("word", 10, 30);
+    fill(0, 102, 153);
+    text("word", 10, 60);
+    fill(0, 102, 153, 51);
+    text("word", 10, 90);
   }
 
   void drawCurves(double y) {
@@ -30,7 +30,12 @@ class MySketch extends PApplet {
   }
 
   @override
-  mouseReleased() {}
+  mouseReleased() {
+    var c = color(255, 204, 0);
+    println(c.value.toString()); // Prints "-13312"
+    println(binary(c.value)); // Prints "11111111111111111100110000000000"
+    println(binary(c.value, 16)); // Prints "1100110000000000"
+  }
 }
 
 class MyApp extends StatelessWidget {
