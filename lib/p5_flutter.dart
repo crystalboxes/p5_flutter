@@ -115,6 +115,7 @@ abstract class PApplet extends CustomPainter
     _size = size;
     _targetCanvas = canvas;
     _targetCanvas.drawColor(color(200), BlendMode.color);
+    _targetCanvas.drawCircle(material.Offset(0, 0), 10, Paint());
 
     var shouldClearOnBeginFrame = clearOnBeginFrame();
     if (!shouldClearOnBeginFrame) {
@@ -167,6 +168,8 @@ abstract class PApplet extends CustomPainter
     _firstFrameDrawn = true;
     _frameCount += 1;
     _frameRate = 1 / (deltaTime.inMilliseconds * 0.001);
+
+    needsUpdate = false;
 
     // _targetCanvas.restore();
   }
@@ -891,11 +894,13 @@ abstract class PApplet extends CustomPainter
     elapsed = newElapsed;
   }
 
+  var needsUpdate = false;
   final eventQueue = <_EventType, Function>{};
   pushCallback(_EventType type, Function func) {
     if (!eventQueue.containsKey(type)) {
       eventQueue[type] = func;
     }
+    needsUpdate = true;
   }
 }
 
@@ -931,7 +936,7 @@ class _P5WidgetState<T extends PApplet> extends material.State<P5Widget>
 
     ticker = createTicker((elapsed) {
       sketch.updateTime(elapsed);
-      if (sketch.firstFrameDrawn && !sketch.isTicking) {
+      if (sketch.firstFrameDrawn && !sketch.isTicking && !sketch.needsUpdate) {
       } else {
         sketch.redraw();
       }

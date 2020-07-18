@@ -43,7 +43,22 @@ class InternalRandom {
   factory InternalRandom._() => null;
   _CustomRandom internalRandom;
 
-  double random(double high) {
+  double _random(double low, double high) {
+    if (low >= high) return low;
+    double diff = high - low;
+    double value = 0;
+    // because of rounding error, can't just add low, otherwise it may hit high
+    // https://github.com/processing/processing/issues/4551
+    do {
+      value = random(diff) + low;
+    } while (value == high);
+    return value;
+  }
+
+  double random(double high, [double highHigh]) {
+    if (highHigh != null) {
+      return _random(high, highHigh);
+    }
     // avoid an infinite loop when 0 or NaN are passed in
     if (high == 0 || high != high) {
       return 0;
