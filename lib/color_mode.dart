@@ -65,9 +65,9 @@ class ColorFunctions {
     return _colorMode.make(r, g, b, a);
   }
 
-  int red(Color c) => c?.red;
-  int green(Color c) => c?.green;
-  int blue(Color c) => c?.blue;
+  int red(Color c) => c.red;
+  int green(Color c) => c.green;
+  int blue(Color c) => c.blue;
 
   double hue(Color c) => HSVColor.fromColor(c).hue;
   double saturation(Color c) => HSVColor.fromColor(c).saturation;

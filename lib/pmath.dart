@@ -26,7 +26,10 @@ class PMath {
   num log(num n) => math.log(n);
   num mag(num a, num b) => Offset(a, b).distance;
   num map(num value, num start1, num stop1, num start2, num stop2) =>
-      start2 + (stop2 - start2) * ((value - start1) / (stop1 - start1));
+      start2.toDouble() +
+      (stop2.toDouble() - start2.toDouble()) *
+          ((value.toDouble() - start1.toDouble()) /
+              (stop1.toDouble() - start1.toDouble()));
   num max(dynamic a, [num b, num c]) {
     if (a is List<num>) {
       return a.reduce(math.max);
@@ -39,6 +42,7 @@ class PMath {
     }
     return math.max(a, b);
   }
+
   num min(dynamic a, [num b, num c]) {
     if (a is List<num>) {
       return a.reduce(math.min);
@@ -51,6 +55,7 @@ class PMath {
     }
     return math.min(a, b);
   }
+
   num norm(num value, num start, num stop) => map(value, start, stop, 0, 1);
   num pow(num x, num exponent) => math.pow(x, exponent);
   num round(num n) => n is int ? n.round() : n.roundToDouble();

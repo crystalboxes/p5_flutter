@@ -51,7 +51,7 @@ class PerlinNoise {
 
       perlin = List<double>(PERLIN_SIZE + 1);
       for (int i = 0; i < PERLIN_SIZE + 1; i++) {
-        perlin[i] = perlinRandom.nextDouble(); //(double)Math.random();
+        perlin[i] = perlinRandom.nextDouble();
       }
       // [toxi 031112]
       // noise broke due to recent change of cos table in PGraphics

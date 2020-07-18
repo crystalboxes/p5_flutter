@@ -4,6 +4,7 @@ import 'dart:ui' as ui;
 import 'package:flutter/material.dart' as material;
 import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:p5_flutter/pvector.dart';
 
 import 'color_mode.dart';
 import 'conversion.dart';
@@ -19,9 +20,9 @@ import 'time_date.dart';
 
 // TODO parametrize these
 const batchesToKeep = 2;
-const drawCommandsPerBatch = 100;
+const drawCommandsPerBatch = 1000;
 
-class PApplet extends CustomPainter
+abstract class PApplet extends CustomPainter
     with
         material.ChangeNotifier,
         PMath,
@@ -49,7 +50,7 @@ class PApplet extends CustomPainter
 
   var _initialized = false;
 
-  Canvas _canvas;
+  CustomCanvas _canvas;
   Canvas _targetCanvas;
 
   var batches = <PictureData>[];
@@ -64,7 +65,9 @@ class PApplet extends CustomPainter
   int frameCount() => _frameCount;
   double frameRate() => _frameRate;
 
-  bool clearOnBeginFrame() => true;
+  bool clearOnBeginFrame(); //=> true;
+
+  PVector createVector(double x, double y) => PVector(x, y);
 
   _getBlendMode(int mode) {
     switch (mode) {
@@ -120,10 +123,10 @@ class PApplet extends CustomPainter
       batches.forEach((element) => element.drawToCanvas(_targetCanvas));
 
       if (_previousFrame != null) {
-        (_canvas as CustomCanvas).drawPictureData(_previousFrame);
+        _canvas.drawPictureData(_previousFrame);
       }
     } else {
-      _canvas = _targetCanvas;
+      _canvas = CustomCanvas(fromOther: _targetCanvas);
     }
 
     if (!_initialized) {
@@ -145,7 +148,8 @@ class PApplet extends CustomPainter
           // make multibatch
           // create canvas
           final _temp = CustomCanvas(pictureRecorder: PictureRecorder());
-          batches.forEach((element) => element.drawToCanvas(_temp));
+          batches
+              .forEach((element) => element.drawToCanvas(_temp.internalCanvas));
           final pic = _temp.getPicture();
           pic.toImage(size);
           batches.clear();
@@ -153,10 +157,11 @@ class PApplet extends CustomPainter
         }
         _previousFrame = null;
       } else {
-        _previousFrame = (_canvas as CustomCanvas).getPicture();
+        _previousFrame = _canvas.getPicture();
         _targetCanvas.drawPicture(_previousFrame.picture);
       }
     }
+    _showDebugInfo();
 
     _canvas = null;
     _firstFrameDrawn = true;
@@ -164,7 +169,6 @@ class PApplet extends CustomPainter
     _frameRate = 1 / (deltaTime.inMilliseconds * 0.001);
 
     // _targetCanvas.restore();
-    _showDebugInfo();
   }
 
   imageMode(int mode) {
@@ -206,9 +210,7 @@ class PApplet extends CustomPainter
     // fps
     final fps = _frameRate;
     var drawCalls = 0;
-    if (_canvas is CustomCanvas) {
-      drawCalls = (_canvas as CustomCanvas).drawCalls;
-    }
+    drawCalls = _canvas.drawCalls;
     TextSpan span = new TextSpan(
         style: new TextStyle(color: material.Colors.blue[800]), text: '''       
         elapsed: ${elapsed.toString()}
@@ -280,11 +282,15 @@ class PApplet extends CustomPainter
   }
 
   popMatrix() {
-    _canvas?.restore();
+    if (_canvas != null) {
+      _canvas.restore();
+    }
   }
 
   pushMatrix() {
-    _canvas?.save();
+    if (_canvas != null) {
+      _canvas.save();
+    }
   }
 
   push() {
@@ -344,7 +350,7 @@ class PApplet extends CustomPainter
     }
 
     paintStyle.useFill = true;
-    paintStyle.fill?.color = color;
+    paintStyle.fill.color = color;
   }
 
   smooth() {}
@@ -362,7 +368,7 @@ class PApplet extends CustomPainter
       color = this.color(r.toInt(), g, b, a);
     }
     paintStyle.useStroke = true;
-    paintStyle.stroke?.color = color;
+    paintStyle.stroke.color = color;
   }
 
   strokeCap(int cap) {
@@ -418,11 +424,11 @@ class PApplet extends CustomPainter
     paintStyle.ellipseMode = mode;
   }
 
-  ellipse(double a, double b, double c, double d) {
+  ellipse(double a, double b, double c, [double d]) {
     final x = a;
     final y = b;
     final width = c;
-    final height = d;
+    final height = d != null ? d : c;
 
     final ps = paintStyle;
     Rect rect;
@@ -706,8 +712,8 @@ class PApplet extends CustomPainter
       _currentContour = resolveCurvePath(_contourVertices);
     }
 
-    _currentContour?.close();
     if (_currentContour != null) {
+      _currentContour.close();
       _cutters.add(_currentContour);
     }
     _isContourActive = false;
@@ -876,7 +882,7 @@ class PApplet extends CustomPainter
         ..layout(
             maxWidth:
                 x2 != null ? x2 > 0 ? x2 : double.infinity : double.infinity)
-        ..paint(_canvas, Offset(x1, y1));
+        ..paint(_canvas.internalCanvas, Offset(x1, y1));
     }
   }
 
@@ -910,7 +916,6 @@ class P5Widget<T extends PApplet> extends material.StatefulWidget {
   _P5WidgetState createState() => _P5WidgetState(create: create);
 }
 
-// TODO wrap into mouse region
 class _P5WidgetState<T extends PApplet> extends material.State<P5Widget>
     with material.SingleTickerProviderStateMixin {
   T Function() create;
