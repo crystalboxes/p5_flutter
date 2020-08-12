@@ -35,14 +35,14 @@ class PVector {
   double mag() => toOffset().distance;
 
   PVector mult(dynamic x, [double y, double z]) {
-    List<double> xyz = getXYZ(x, y, z);
+    List<double> xyz = _getXYZ(x, y, z);
     this._dx *= xyz[0];
     this._dy *= xyz[1];
     this._dz *= xyz[2];
     return this;
   }
 
-  List<double> getXYZ(dynamic x, [double y, double z]) {
+  List<double> _getXYZ(dynamic x, [double y, double z]) {
     if (x is List<num>) {
       return [
         x[0].toDouble(),
@@ -94,7 +94,7 @@ class PVector {
   }
 
   PVector add(dynamic x, [double y, double z]) {
-    List<double> xyz = getXYZ(x, y, z);
+    List<double> xyz = _getXYZ(x, y, z);
     this._dx += xyz[0];
     this._dy += xyz[1];
     this._dz += xyz[2];
